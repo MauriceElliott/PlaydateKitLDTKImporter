@@ -1,6 +1,7 @@
 # PlaydateKitLDtkImporter
 
 A Swift package for importing LDtk Super Simple Export files into PlaydateKit games.
+Was initially based on the lua version for Playdate but the super simple importer seemed to serve the purpose just as well and be much simpler to implement, so that's what we're going with.
 
 ## Overview
 
