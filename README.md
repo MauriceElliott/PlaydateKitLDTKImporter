@@ -9,11 +9,11 @@ An LDtk Importer for Playdate Kit.
 
 ## Overview
 
-This document outlines the conversion of a Lua-based LDtk (Level Designer Toolkit) importer for Playdate games to Swift using PlaydateKit. The original Lua file imports LDTK levels into Playdate games using the standard Lua API, and we need to create equivalent functionality in Swift for PlaydateKit projects.
+This document outlines the conversion of a Lua-based LDtk (Level Designer Toolkit) importer for Playdate games to Swift using PlaydateKit. The original Lua file imports LDtk levels into Playdate games using the standard Lua API, and we need to create equivalent functionality in Swift for PlaydateKit projects.
 
 ## Original Request
 
-> This lua file is written as a way to import LDTK (which is a tile based level editor, can be found at https://ldtk.io), into playdate games, using the standard lua API, I need to create code that is thematically similar, and does the same job, but is written in swift, to import into a PlaydateKit project (A library for Playdate which uses the Playdate C api, and adds a wrapper round it, documenation for which can be found here: https://finnvoor.github.io/PlaydateKit/documentation/playdatekit/), and Swift embedded, which is a current feature of Swift embedded.
+> This lua file is written as a way to import LDtk (which is a tile based level editor, can be found at https://ldtk.io), into playdate games, using the standard lua API, I need to create code that is thematically similar, and does the same job, but is written in swift, to import into a PlaydateKit project (A library for Playdate which uses the Playdate C api, and adds a wrapper round it, documenation for which can be found here: https://finnvoor.github.io/PlaydateKit/documentation/playdatekit/), and Swift embedded, which is a current feature of Swift embedded.
 
 ## Analysis of LDtk.lua File
 
