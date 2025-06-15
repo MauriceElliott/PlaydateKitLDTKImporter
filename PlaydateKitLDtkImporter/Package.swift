@@ -9,16 +9,27 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "PlaydateKitLDtkImporter",
-            targets: ["PlaydateKitLDtkImporter"]),
+            targets: ["PlaydateKitLDtkImporter"])
+    ],
+    dependencies: [
+        // Add dependencies here if needed for PlaydateKit integration
+        // .package(url: "https://github.com/PlaydateKit/PlaydateKit", from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "PlaydateKitLDtkImporter"),
+            name: "PlaydateKitLDtkImporter",
+            dependencies: [
+                // Add PlaydateKit dependency when available
+                // "PlaydateKit"
+            ],
+            path: "Sources/PlaydateKitLDtkImporter"
+        ),
         .testTarget(
             name: "PlaydateKitLDtkImporterTests",
-            dependencies: ["PlaydateKitLDtkImporter"]
+            dependencies: ["PlaydateKitLDtkImporter"],
+            path: "Tests/PlaydateKitLDtkImporterTests"
         ),
     ]
 )
