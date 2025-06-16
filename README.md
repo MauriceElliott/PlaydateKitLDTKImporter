@@ -255,7 +255,3 @@ The library includes comprehensive error handling for:
 - Swift 5.5+
 - PlaydateKit framework
 - macOS 10.15+ / iOS 13+ (for development)
-
-## License
-
-[Add your license information here]
