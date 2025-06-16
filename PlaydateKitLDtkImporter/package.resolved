@@ -1,0 +1,15 @@
+{
+  "originHash" : "74b919d73f9aa869b600a5abd5af52bbf9a739cd5d1a877039c41d849e5c1cc6",
+  "pins" : [
+    {
+      "identity" : "playdatekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/finnvoor/PlaydateKit.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8862bc6a60307a63b233b03ec1d67a8ac5cb0335"
+      }
+    }
+  ],
+  "version" : 3
+}

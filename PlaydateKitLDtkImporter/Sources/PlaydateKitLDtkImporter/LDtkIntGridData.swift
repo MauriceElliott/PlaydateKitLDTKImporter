@@ -5,95 +5,115 @@
 //  Created by PlaydateKit LDtk Importer
 //
 
-import Foundation
-
 /// Represents IntGrid layer data from LDtk Super Simple Export
 /// Provides access to grid-based collision/logic data from CSV files
-public class LDtkIntGridData {
+public struct LDtkIntGridData {
 
     // MARK: - Properties
 
-    /// Layer identifier/name from LDtk
-    // public let identifier: String
+    /// Layer identifier/name (C string buffer)
+    private var identifierBuffer:
+        (
+            UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8
+        )
 
     /// Grid width in cells
-    // public let width: Int
+    public let width: UInt32
 
     /// Grid height in cells
-    // public let height: Int
+    public let height: UInt32
 
     /// Size of each grid cell in pixels
-    // public let cellSize: Int
+    public let cellSize: UInt32
 
-    /// 2D array of IntGrid values [y][x]
-    // private var gridData: [[Int]]
+    /// Raw grid data pointer (managed externally)
+    private let gridDataPtr: UnsafePointer<Int32>?
 
-    /// Path to the CSV file on disk
-    // private let csvPath: String
+    /// Whether the data has been loaded
+    private var isDataLoaded: Bool
 
-    /// Whether the data has been loaded from CSV
-    // private var isDataLoaded: Bool
-
-    /// Cached flattened array for performance
-    // private var flattenedData: [Int]?
+    /// Memory usage of this IntGrid data
+    private var memoryUsage: UInt32
 
     // MARK: - Initialization
 
-    /// Initialize IntGrid data with basic information
-    /// CSV loading happens lazily on first access
-    /// - Parameters:
-    ///   - identifier: Layer name/identifier
-    ///   - csvPath: Path to the CSV file
-    ///   - width: Grid width in cells
-    ///   - height: Grid height in cells
-    ///   - cellSize: Size of each cell in pixels
-    public init(identifier: String, csvPath: String, width: Int, height: Int, cellSize: Int) {
-        // Store basic grid information
-        // Set up lazy loading flags
-        // Initialize empty grid data structure
+    public init() {
+        self.identifierBuffer = (
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        )
+        self.width = 0
+        self.height = 0
+        self.cellSize = 0
+        self.gridDataPtr = nil
+        self.isDataLoaded = false
+        self.memoryUsage = 0
+    }
+
+    public init(
+        identifier: UnsafePointer<CChar>,
+        width: UInt32,
+        height: UInt32,
+        cellSize: UInt32,
+        gridDataPtr: UnsafePointer<Int32>?
+    ) {
+        // Copy identifier string to buffer
+        var buffer = (
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0),
+            UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0), UInt8(0)
+        )
+
+        // Copy up to 31 characters (leave room for null terminator)
+        var i = 0
+        while i < 31 && identifier[i] != 0 {
+            withUnsafeMutablePointer(to: &buffer) { ptr in
+                let bytes = ptr.withMemoryRebound(to: UInt8.self, capacity: 32) { $0 }
+                bytes[i] = UInt8(identifier[i])
+            }
+            i += 1
+        }
+
+        self.identifierBuffer = buffer
+        self.width = width
+        self.height = height
+        self.cellSize = cellSize
+        self.gridDataPtr = gridDataPtr
+        self.isDataLoaded = gridDataPtr != nil
+        self.memoryUsage = UInt32(MemoryLayout<LDtkIntGridData>.size)
     }
 
     // MARK: - Public API
+
+    /// Get pointer to the identifier C string
+    public func getIdentifierPtr() -> UnsafePointer<CChar> {
+        return withUnsafePointer(to: identifierBuffer) { ptr in
+            ptr.withMemoryRebound(to: CChar.self, capacity: 32) { $0 }
+        }
+    }
 
     /// Get IntGrid value at specific grid coordinates
     /// - Parameters:
     ///   - x: X coordinate in grid cells
     ///   - y: Y coordinate in grid cells
     /// - Returns: IntGrid value (0 for empty, positive integers for values)
-    public func getValue(x: Int, y: Int) -> Int {
-        // Load data from CSV if not already loaded
-        // Validate coordinates are within bounds
-        // Return grid value at specified coordinates
+    public func getValue(x: UInt32, y: UInt32) -> Int32 {
+        // Stub implementation
         return 0
     }
 
     /// Get IntGrid value at pixel coordinates
-    /// Automatically converts pixel coordinates to grid coordinates
     /// - Parameters:
     ///   - pixelX: X coordinate in pixels
     ///   - pixelY: Y coordinate in pixels
     /// - Returns: IntGrid value at that pixel location
-    public func getValueAtPixel(x pixelX: Int, y pixelY: Int) -> Int {
-        // Convert pixel coordinates to grid coordinates
-        // Call getValue with grid coordinates
+    public func getValueAtPixel(x pixelX: Int32, y pixelY: Int32) -> Int32 {
+        // Stub implementation
         return 0
-    }
-
-    /// Get all IntGrid values as a 2D array
-    /// - Returns: 2D array [y][x] of all grid values
-    public func getAllValues() -> [[Int]] {
-        // Load data from CSV if not already loaded
-        // Return copy of gridData array
-        return []
-    }
-
-    /// Get all IntGrid values as a flattened 1D array
-    /// Useful for performance-critical operations
-    /// - Returns: Flattened array of grid values (row-major order)
-    public func getFlattenedValues() -> [Int] {
-        // Load data if needed
-        // Return cached flattened data or create it
-        return []
     }
 
     /// Check if a grid cell is empty (value == 0)
@@ -101,9 +121,9 @@ public class LDtkIntGridData {
     ///   - x: X coordinate in grid cells
     ///   - y: Y coordinate in grid cells
     /// - Returns: True if cell is empty, false otherwise
-    public func isEmpty(x: Int, y: Int) -> Bool {
-        // Get value at coordinates and check if it's 0
-        return getValue(x: x, y: y) == 0
+    public func isEmpty(x: UInt32, y: UInt32) -> Bool {
+        // Stub implementation
+        return true
     }
 
     /// Check if a pixel location is empty
@@ -111,41 +131,24 @@ public class LDtkIntGridData {
     ///   - pixelX: X coordinate in pixels
     ///   - pixelY: Y coordinate in pixels
     /// - Returns: True if location is empty, false otherwise
-    public func isEmptyAtPixel(x pixelX: Int, y pixelY: Int) -> Bool {
-        // Convert to grid coordinates and check if empty
-        return getValueAtPixel(x: pixelX, y: pixelY) == 0
+    public func isEmptyAtPixel(x pixelX: Int32, y pixelY: Int32) -> Bool {
+        // Stub implementation
+        return true
     }
-
-    // MARK: - Advanced Features
 
     /// Get all grid positions that have a specific value
-    /// - Parameter value: IntGrid value to search for
-    /// - Returns: Array of grid coordinates with that value
-    public func getPositions(withValue value: Int) -> [(x: Int, y: Int)] {
-        // Load data if needed
-        // Iterate through grid and collect positions with matching value
-        return []
-    }
-
-    /// Get all unique values present in the grid
-    /// - Returns: Set of all non-zero values found in the grid
-    public func getUniqueValues() -> Set<Int> {
-        // Load data if needed
-        // Scan all grid values and collect unique non-zero values
-        return []
-    }
-
-    /// Get a rectangular region of IntGrid values
     /// - Parameters:
-    ///   - x: Starting X coordinate
-    ///   - y: Starting Y coordinate
-    ///   - width: Width of region in cells
-    ///   - height: Height of region in cells
-    /// - Returns: 2D array of values in the specified region
-    public func getRegion(x: Int, y: Int, width: Int, height: Int) -> [[Int]] {
-        // Validate region bounds
-        // Extract subregion from main grid data
-        return []
+    ///   - value: IntGrid value to search for
+    ///   - buffer: Buffer to store matching positions
+    ///   - maxCount: Maximum number of positions to return
+    /// - Returns: Number of positions found
+    public func getPositions(
+        withValue value: Int32,
+        into buffer: UnsafeMutablePointer<Point>,
+        maxCount: Int
+    ) -> Int {
+        // Stub implementation
+        return 0
     }
 
     /// Check if a rectangular region contains any non-empty cells
@@ -155,9 +158,8 @@ public class LDtkIntGridData {
     ///   - width: Width of region in cells
     ///   - height: Height of region in cells
     /// - Returns: True if region contains any non-zero values
-    public func hasValuesInRegion(x: Int, y: Int, width: Int, height: Int) -> Bool {
-        // Check region bounds
-        // Scan region for any non-zero values
+    public func hasValuesInRegion(x: UInt32, y: UInt32, width: UInt32, height: UInt32) -> Bool {
+        // Stub implementation
         return false
     }
 
@@ -166,9 +168,9 @@ public class LDtkIntGridData {
     ///   - gridX: X coordinate in grid cells
     ///   - gridY: Y coordinate in grid cells
     /// - Returns: Pixel coordinates of the cell's top-left corner
-    public func gridToPixel(gridX: Int, gridY: Int) -> (x: Int, y: Int) {
-        // Multiply grid coordinates by cell size
-        return (x: gridX * cellSize, y: gridY * cellSize)
+    public func gridToPixel(gridX: UInt32, gridY: UInt32) -> Point {
+        // Stub implementation
+        return Point(x: 0, y: 0)
     }
 
     /// Convert pixel coordinates to grid coordinates
@@ -176,9 +178,9 @@ public class LDtkIntGridData {
     ///   - pixelX: X coordinate in pixels
     ///   - pixelY: Y coordinate in pixels
     /// - Returns: Grid coordinates containing that pixel
-    public func pixelToGrid(pixelX: Int, pixelY: Int) -> (x: Int, y: Int) {
-        // Divide pixel coordinates by cell size (integer division)
-        return (x: pixelX / cellSize, y: pixelY / cellSize)
+    public func pixelToGrid(pixelX: Int32, pixelY: Int32) -> Point {
+        // Stub implementation
+        return Point(x: 0, y: 0)
     }
 
     /// Get the pixel bounds of a grid cell
@@ -186,54 +188,27 @@ public class LDtkIntGridData {
     ///   - gridX: X coordinate in grid cells
     ///   - gridY: Y coordinate in grid cells
     /// - Returns: Rectangle representing the pixel bounds of the cell
-    public func getCellBounds(gridX: Int, gridY: Int) -> Rectangle {
-        // Calculate pixel position and create rectangle with cell size
-        let (pixelX, pixelY) = gridToPixel(gridX: gridX, gridY: gridY)
-        return Rectangle(x: pixelX, y: pixelY, width: cellSize, height: cellSize)
+    public func getCellBounds(gridX: UInt32, gridY: UInt32) -> Rectangle {
+        // Stub implementation
+        return Rectangle(x: 0, y: 0, width: 0, height: 0)
     }
 
-    // MARK: - Data Management
-
-    /// Force reload the CSV data from disk
-    /// - Throws: LDtkError if CSV loading or parsing fails
-    public func reloadData() throws {
-        // Clear current data
-        // Load and parse CSV file
-        // Update grid data structures
-    }
-
-    /// Check if the CSV data is currently loaded in memory
+    /// Check if the data is currently loaded in memory
     /// - Returns: True if data is loaded, false otherwise
     public var isLoaded: Bool {
-        // Return whether data has been loaded from CSV
-        return false
+        return isDataLoaded
     }
 
     /// Clear cached data to free memory
-    /// Data will be reloaded from CSV on next access
-    public func clearCache() {
-        // Clear grid data arrays
-        // Reset isDataLoaded flag
-        // Clear flattened data cache
+    public mutating func clearCache() {
+        // Stub implementation - in real version would clear data
+        self.isDataLoaded = false
     }
 
     /// Get estimated memory usage of the grid data
     /// - Returns: Estimated memory usage in bytes
-    public func getMemoryUsage() -> Int {
-        // Calculate memory usage based on grid size and data structures
-        return width * height * MemoryLayout<Int>.size
-    }
-
-    // MARK: - Private Implementation
-
-    /// Load and parse the CSV file
-    /// - Throws: LDtkError if file loading or parsing fails
-    private func loadCSVData() throws {
-        // Read CSV file from disk
-        // Parse CSV rows and columns
-        // Convert string values to integers
-        // Store in gridData 2D array
-        // Set isDataLoaded flag
+    public func getMemoryUsage() -> UInt32 {
+        return memoryUsage
     }
 
     /// Validate that coordinates are within grid bounds
@@ -241,29 +216,36 @@ public class LDtkIntGridData {
     ///   - x: X coordinate to validate
     ///   - y: Y coordinate to validate
     /// - Returns: True if coordinates are valid, false otherwise
-    private func isValidCoordinate(x: Int, y: Int) -> Bool {
-        // Check if x and y are within grid bounds
-        return x >= 0 && x < width && y >= 0 && y < height
+    public func isValidCoordinate(x: UInt32, y: UInt32) -> Bool {
+        return x < width && y < height
     }
 }
 
-/// Helper types for IntGrid operations
-extension LDtkIntGridData {
+/// Helper structure representing a grid position with its value
+public struct LDtkGridCell {
+    /// Grid X coordinate
+    public let x: UInt32
 
-    /// Structure representing a grid position with its value
-    public struct GridCell {
-        /// Grid X coordinate
-        // let x: Int
+    /// Grid Y coordinate
+    public let y: UInt32
 
-        /// Grid Y coordinate
-        // let y: Int
+    /// IntGrid value at this position
+    public let value: Int32
 
-        /// IntGrid value at this position
-        // let value: Int
+    public init(x: UInt32, y: UInt32, value: Int32) {
+        self.x = x
+        self.y = y
+        self.value = value
+    }
 
-        /// Pixel coordinates of this cell
-        // var pixelPosition: (x: Int, y: Int) {
-        //     return (x: x * cellSize, y: y * cellSize)
-        // }
+    /// Get pixel coordinates of this cell
+    public func pixelPosition(cellSize: UInt32) -> Point {
+        return Point(x: Int32(x * cellSize), y: Int32(y * cellSize))
     }
 }
+
+// MARK: - C API (Stub implementations)
+
+// Note: C API functions removed for Embedded Swift compatibility
+// These would need to be implemented using a different approach
+// that doesn't rely on @_cdecl attribute

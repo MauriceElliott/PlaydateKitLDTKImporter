@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         // Add dependencies here if needed for PlaydateKit integration
-        // .package(url: "https://github.com/PlaydateKit/PlaydateKit", from: "1.0.0"),
+        .package(url: "https://github.com/finnvoor/PlaydateKit.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +24,18 @@ let package = Package(
                 // Add PlaydateKit dependency when available
                 // "PlaydateKit"
             ],
-            path: "Sources/PlaydateKitLDtkImporter"
+            path: "Sources/PlaydateKitLDtkImporter",
+            swiftSettings: [
+                .enableExperimentalFeature("Embedded"),
+                .unsafeFlags([
+                    "-whole-module-optimization",
+                    "-Xfrontend", "-disable-objc-interop",
+                    "-Xfrontend", "-disable-stack-protector",
+                    "-Xfrontend", "-function-sections",
+                    "-Xfrontend", "-gline-tables-only",
+                    "-Xcc", "-DTARGET_EXTENSION"
+                ]),
+            ],
         ),
         .testTarget(
             name: "PlaydateKitLDtkImporterTests",
