@@ -7,7 +7,7 @@
 
 /// Represents IntGrid layer data from LDtk Super Simple Export
 /// Provides access to grid-based collision/logic data from CSV files
-public struct LDtkIntGridData {
+public class LDtkIntGridData {
 
     // MARK: - Properties
 
@@ -200,7 +200,7 @@ public struct LDtkIntGridData {
     }
 
     /// Clear cached data to free memory
-    public mutating func clearCache() {
+    public func clearCache() {
         // Stub implementation - in real version would clear data
         self.isDataLoaded = false
     }
@@ -244,8 +244,69 @@ public struct LDtkGridCell {
     }
 }
 
-// MARK: - C API (Stub implementations)
+// MARK: - C API
 
-// Note: C API functions removed for Embedded Swift compatibility
-// These would need to be implemented using a different approach
-// that doesn't rely on @_cdecl attribute
+@_cdecl("ldtk_intgrid_get_identifier")
+public func ldtk_intgrid_get_identifier(_ intGrid: UnsafePointer<LDtkIntGridData>) -> UnsafePointer<
+    CChar
+> {
+    // Stub implementation
+    return intGrid.pointee.getIdentifierPtr()
+}
+
+@_cdecl("ldtk_intgrid_get_dimensions")
+public func ldtk_intgrid_get_dimensions(
+    _ intGrid: UnsafePointer<LDtkIntGridData>, _ width: UnsafeMutablePointer<UInt32>,
+    _ height: UnsafeMutablePointer<UInt32>
+) {
+    // Stub implementation
+    width.pointee = 0
+    height.pointee = 0
+}
+
+@_cdecl("ldtk_intgrid_get_cell_size")
+public func ldtk_intgrid_get_cell_size(_ intGrid: UnsafePointer<LDtkIntGridData>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_intgrid_get_value")
+public func ldtk_intgrid_get_value(
+    _ intGrid: UnsafePointer<LDtkIntGridData>, _ x: UInt32, _ y: UInt32
+) -> Int32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_intgrid_get_value_at_pixel")
+public func ldtk_intgrid_get_value_at_pixel(
+    _ intGrid: UnsafePointer<LDtkIntGridData>, _ pixelX: Int32, _ pixelY: Int32
+) -> Int32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_intgrid_is_empty")
+public func ldtk_intgrid_is_empty(
+    _ intGrid: UnsafePointer<LDtkIntGridData>, _ x: UInt32, _ y: UInt32
+) -> UInt8 {
+    // Stub implementation
+    return 1
+}
+
+@_cdecl("ldtk_intgrid_is_loaded")
+public func ldtk_intgrid_is_loaded(_ intGrid: UnsafePointer<LDtkIntGridData>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_intgrid_get_memory_usage")
+public func ldtk_intgrid_get_memory_usage(_ intGrid: UnsafePointer<LDtkIntGridData>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_intgrid_clear_cache")
+public func ldtk_intgrid_clear_cache(_ intGrid: UnsafeMutablePointer<LDtkIntGridData>) {
+    // Stub implementation
+}

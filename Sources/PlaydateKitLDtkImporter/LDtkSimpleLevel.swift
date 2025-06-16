@@ -7,7 +7,7 @@
 
 /// Represents a loaded level from LDtk Super Simple Export
 /// Contains the composite image, individual layers, entities, and IntGrid data
-public struct LDtkSimpleLevel {
+public class LDtkSimpleLevel {
 
     // MARK: - Properties
 
@@ -108,7 +108,7 @@ public struct LDtkSimpleLevel {
     }
 
     /// Set the composite image
-    public mutating func setCompositeImage(_ image: ImageData) -> Bool {
+    public func setCompositeImage(_ image: ImageData) -> Bool {
         // Stub implementation
         return false
     }
@@ -126,7 +126,7 @@ public struct LDtkSimpleLevel {
     }
 
     /// Add a layer to the level
-    public mutating func addLayer(_ layer: LDtkSimpleLayer) -> Bool {
+    public func addLayer(_ layer: LDtkSimpleLayer) -> Bool {
         // Stub implementation
         return false
     }
@@ -161,7 +161,7 @@ public struct LDtkSimpleLevel {
     }
 
     /// Add an entity to the level
-    public mutating func addEntity(_ entity: LDtkSimpleEntity) -> Bool {
+    public func addEntity(_ entity: LDtkSimpleEntity) -> Bool {
         // Stub implementation
         return false
     }
@@ -179,7 +179,7 @@ public struct LDtkSimpleLevel {
     }
 
     /// Add IntGrid data to the level
-    public mutating func addIntGridData(_ intGrid: LDtkIntGridData) -> Bool {
+    public func addIntGridData(_ intGrid: LDtkIntGridData) -> Bool {
         // Stub implementation
         return false
     }
@@ -194,13 +194,13 @@ public struct LDtkSimpleLevel {
     }
 
     /// Add a custom field to the level
-    public mutating func addCustomField(_ field: LDtkFieldPair) -> Bool {
+    public func addCustomField(_ field: LDtkFieldPair) -> Bool {
         // Stub implementation
         return false
     }
 
     /// Clear all cached data to free memory
-    public mutating func clearCache() {
+    public func clearCache() {
         // Stub implementation
         self.isFullyLoaded = false
         self.memoryUsage = 0
@@ -225,14 +225,91 @@ public struct LDtkSimpleLevel {
     }
 
     /// Mark the level as fully loaded
-    public mutating func markAsFullyLoaded() {
+    public func markAsFullyLoaded() {
         // Stub implementation
         self.isFullyLoaded = true
     }
 }
 
-// MARK: - C API (Stub implementations)
+// MARK: - C API
 
-// Note: C API functions removed for Embedded Swift compatibility
-// These would need to be implemented using a different approach
-// that doesn't rely on @_cdecl attribute
+@_cdecl("ldtk_level_get_identifier")
+public func ldtk_level_get_identifier(_ level: UnsafePointer<LDtkSimpleLevel>) -> UnsafePointer<
+    CChar
+> {
+    // Stub implementation
+    return level.pointee.getIdentifierPtr()
+}
+
+@_cdecl("ldtk_level_get_size")
+public func ldtk_level_get_size(
+    _ level: UnsafePointer<LDtkSimpleLevel>, _ width: UnsafeMutablePointer<UInt32>,
+    _ height: UnsafeMutablePointer<UInt32>
+) {
+    // Stub implementation
+    width.pointee = 0
+    height.pointee = 0
+}
+
+@_cdecl("ldtk_level_get_world_position")
+public func ldtk_level_get_world_position(
+    _ level: UnsafePointer<LDtkSimpleLevel>, _ x: UnsafeMutablePointer<Int32>,
+    _ y: UnsafeMutablePointer<Int32>
+) {
+    // Stub implementation
+    x.pointee = 0
+    y.pointee = 0
+}
+
+@_cdecl("ldtk_level_get_background_color")
+public func ldtk_level_get_background_color(_ level: UnsafePointer<LDtkSimpleLevel>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_get_layer_count")
+public func ldtk_level_get_layer_count(_ level: UnsafePointer<LDtkSimpleLevel>) -> Int {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_get_entities")
+public func ldtk_level_get_entities(
+    _ level: UnsafePointer<LDtkSimpleLevel>, _ buffer: UnsafeMutablePointer<LDtkSimpleEntity>,
+    _ maxCount: Int
+) -> Int {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_get_entities_of_type")
+public func ldtk_level_get_entities_of_type(
+    _ level: UnsafePointer<LDtkSimpleLevel>, _ typeId: UInt16,
+    _ buffer: UnsafeMutablePointer<LDtkSimpleEntity>, _ maxCount: Int
+) -> Int {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_get_intgrid_count")
+public func ldtk_level_get_intgrid_count(_ level: UnsafePointer<LDtkSimpleLevel>) -> Int {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_is_loaded")
+public func ldtk_level_is_loaded(_ level: UnsafePointer<LDtkSimpleLevel>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_get_memory_usage")
+public func ldtk_level_get_memory_usage(_ level: UnsafePointer<LDtkSimpleLevel>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_level_clear_cache")
+public func ldtk_level_clear_cache(_ level: UnsafeMutablePointer<LDtkSimpleLevel>) {
+    // Stub implementation
+}

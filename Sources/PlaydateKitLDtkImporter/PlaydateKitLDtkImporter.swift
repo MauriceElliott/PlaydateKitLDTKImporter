@@ -5,9 +5,9 @@
 //  Created by PlaydateKit LDtk Importer
 //
 
-/// Main importer struct for LDtk Super Simple Export files
+/// Main importer class for LDtk Super Simple Export files
 /// Manages project loading, level discovery, and provides access to level data
-public struct LDtkSimpleImporter {
+public class LDtkSimpleImporter {
 
     // MARK: - Properties
 
@@ -38,7 +38,7 @@ public struct LDtkSimpleImporter {
     /// Discovers all available levels and validates the export structure
     /// - Parameter projectPath: Path to the exported project folder (as C string)
     /// - Returns: Result indicating success or error
-    public mutating func loadProject(from projectPath: UnsafePointer<CChar>) -> LDtkResult<Bool> {
+    public func loadProject(from projectPath: UnsafePointer<CChar>) -> LDtkResult<Bool> {
         // Stub implementation
         return LDtkResult(error: .fileNotFound)
     }
@@ -55,8 +55,7 @@ public struct LDtkSimpleImporter {
     /// Returns cached version if already loaded, otherwise loads from disk
     /// - Parameter levelName: Identifier of the level to load (as C string)
     /// - Returns: Result containing loaded level or error
-    public mutating func loadLevel(_ levelName: UnsafePointer<CChar>) -> LDtkResult<LDtkSimpleLevel>
-    {
+    public func loadLevel(_ levelName: UnsafePointer<CChar>) -> LDtkResult<LDtkSimpleLevel> {
         // Stub implementation
         return LDtkResult(error: .fileNotFound)
     }
@@ -73,7 +72,7 @@ public struct LDtkSimpleImporter {
     /// - Parameter levelNames: Array of level names to preload
     /// - Parameter count: Number of levels in the array
     /// - Returns: Result indicating success or first error encountered
-    public mutating func preloadLevels(
+    public func preloadLevels(
         _ levelNames: UnsafePointer<UnsafePointer<CChar>>, count: UInt8
     ) -> LDtkResult<Bool> {
         // Stub implementation
@@ -82,14 +81,9 @@ public struct LDtkSimpleImporter {
 
     /// Clear the level cache to free up memory
     /// Levels will need to be reloaded from disk on next access
-    public mutating func clearCache() {
+    public func clearCache() {
         levelCache.clear()
         memoryUsage = 0
-    }
-
-    /// Get project information and metadata
-    public var projectInfo: LDtkProjectInfo? {
-        return self.projectInfo
     }
 
     /// Get current memory usage statistics
@@ -102,14 +96,48 @@ public struct LDtkSimpleImporter {
     /// Unload a specific level from cache to free memory
     /// - Parameter levelName: Name of the level to unload (as C string)
     /// - Returns: True if level was found and unloaded, false otherwise
-    public mutating func unloadLevel(_ levelName: UnsafePointer<CChar>) -> Bool {
+    public func unloadLevel(_ levelName: UnsafePointer<CChar>) -> Bool {
         // Stub implementation
         return false
     }
 }
 
-// MARK: - C API (Stub implementations)
+// MARK: - C API
 
-// Note: C API functions removed for Embedded Swift compatibility
-// These would need to be implemented using a different approach
-// that doesn't rely on @_cdecl attribute
+/// Global importer instance for C API
+private let globalImporter = LDtkSimpleImporter()
+
+@_cdecl("ldtk_load_project")
+public func ldtk_load_project(_ projectPath: UnsafePointer<CChar>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_has_level")
+public func ldtk_has_level(_ levelName: UnsafePointer<CChar>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_load_level")
+public func ldtk_load_level(_ levelName: UnsafePointer<CChar>) -> UnsafePointer<LDtkSimpleLevel>? {
+    // Stub implementation
+    return nil
+}
+
+@_cdecl("ldtk_get_memory_stats")
+public func ldtk_get_memory_stats() -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_clear_cache")
+public func ldtk_clear_cache() {
+    // Stub implementation
+}
+
+@_cdecl("ldtk_unload_level")
+public func ldtk_unload_level(_ levelName: UnsafePointer<CChar>) -> UInt8 {
+    // Stub implementation
+    return 0
+}

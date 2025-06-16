@@ -12,7 +12,7 @@
 
 /// Simple test function stub for Embedded Swift compatibility
 public func runBasicTests() -> Bool {
-    // Test basic struct initialization
+    // Test basic class initialization
     let importer = LDtkSimpleImporter()
     let level = LDtkSimpleLevel()
     let layer = LDtkSimpleLayer()

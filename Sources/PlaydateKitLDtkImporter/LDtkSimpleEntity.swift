@@ -7,7 +7,7 @@
 
 /// Represents an entity instance from LDtk Super Simple Export
 /// Contains entity position, size, type, and custom field data
-public struct LDtkSimpleEntity {
+public class LDtkSimpleEntity {
 
     // MARK: - Properties
 
@@ -85,7 +85,7 @@ public struct LDtkSimpleEntity {
     /// Add a custom field to the entity
     /// - Parameter field: Field pair to add
     /// - Returns: True if added successfully, false if cache is full
-    public mutating func addCustomField(_ field: LDtkFieldPair) -> Bool {
+    public func addCustomField(_ field: LDtkFieldPair) -> Bool {
         // Stub implementation
         return fields.append(field)
     }
@@ -169,8 +169,74 @@ public struct LDtkEntityTileInfo {
     }
 }
 
-// MARK: - C API (Stub implementations)
+// MARK: - C API
 
-// Note: C API functions removed for Embedded Swift compatibility
-// These would need to be implemented using a different approach
-// that doesn't rely on @_cdecl attribute
+@_cdecl("ldtk_entity_get_type_id")
+public func ldtk_entity_get_type_id(_ entity: UnsafePointer<LDtkSimpleEntity>) -> UInt16 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_entity_get_instance_id")
+public func ldtk_entity_get_instance_id(_ entity: UnsafePointer<LDtkSimpleEntity>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_entity_get_position")
+public func ldtk_entity_get_position(
+    _ entity: UnsafePointer<LDtkSimpleEntity>, _ x: UnsafeMutablePointer<Int32>,
+    _ y: UnsafeMutablePointer<Int32>
+) {
+    // Stub implementation
+    x.pointee = 0
+    y.pointee = 0
+}
+
+@_cdecl("ldtk_entity_get_size")
+public func ldtk_entity_get_size(
+    _ entity: UnsafePointer<LDtkSimpleEntity>, _ width: UnsafeMutablePointer<UInt32>,
+    _ height: UnsafeMutablePointer<UInt32>
+) {
+    // Stub implementation
+    width.pointee = 0
+    height.pointee = 0
+}
+
+@_cdecl("ldtk_entity_get_pivot")
+public func ldtk_entity_get_pivot(
+    _ entity: UnsafePointer<LDtkSimpleEntity>, _ x: UnsafeMutablePointer<Int32>,
+    _ y: UnsafeMutablePointer<Int32>
+) {
+    // Stub implementation
+    x.pointee = 0
+    y.pointee = 0
+}
+
+@_cdecl("ldtk_entity_get_smart_color")
+public func ldtk_entity_get_smart_color(_ entity: UnsafePointer<LDtkSimpleEntity>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_entity_get_z_index")
+public func ldtk_entity_get_z_index(_ entity: UnsafePointer<LDtkSimpleEntity>) -> Int16 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_entity_has_field")
+public func ldtk_entity_has_field(
+    _ entity: UnsafePointer<LDtkSimpleEntity>, _ fieldName: UnsafePointer<CChar>
+) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_entity_overlaps")
+public func ldtk_entity_overlaps(
+    _ entity1: UnsafePointer<LDtkSimpleEntity>, _ entity2: UnsafePointer<LDtkSimpleEntity>
+) -> UInt8 {
+    // Stub implementation
+    return 0
+}

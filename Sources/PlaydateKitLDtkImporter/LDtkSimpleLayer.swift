@@ -7,7 +7,7 @@
 
 /// Represents an individual layer from LDtk Super Simple Export
 /// Contains the layer's PNG image and metadata
-public struct LDtkSimpleLayer {
+public class LDtkSimpleLayer {
 
     // MARK: - Properties
 
@@ -101,7 +101,7 @@ public struct LDtkSimpleLayer {
     }
 
     /// Set the layer's image data
-    public mutating func setImage(_ imageData: ImageData) -> Bool {
+    public func setImage(_ imageData: ImageData) -> Bool {
         // Stub implementation
         return false
     }
@@ -119,7 +119,7 @@ public struct LDtkSimpleLayer {
     }
 
     /// Clear the cached image to free memory
-    public mutating func clearImageCache() {
+    public func clearImageCache() {
         // Stub implementation
         self.isImageLoaded = false
     }
@@ -167,8 +167,63 @@ public struct LDtkSimpleLayer {
     }
 }
 
-// MARK: - C API (Stub implementations)
+// MARK: - C API
 
-// Note: C API functions removed for Embedded Swift compatibility
-// These would need to be implemented using a different approach
-// that doesn't rely on @_cdecl attribute
+@_cdecl("ldtk_layer_get_identifier")
+public func ldtk_layer_get_identifier(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UnsafePointer<
+    CChar
+> {
+    // Stub implementation
+    return layer.pointee.getIdentifierPtr()
+}
+
+@_cdecl("ldtk_layer_is_visible")
+public func ldtk_layer_is_visible(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_get_opacity")
+public func ldtk_layer_get_opacity(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_get_type")
+public func ldtk_layer_get_type(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_get_z_index")
+public func ldtk_layer_get_z_index(_ layer: UnsafePointer<LDtkSimpleLayer>) -> Int16 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_get_offset")
+public func ldtk_layer_get_offset(
+    _ layer: UnsafePointer<LDtkSimpleLayer>, _ x: UnsafeMutablePointer<Int32>,
+    _ y: UnsafeMutablePointer<Int32>
+) {
+    // Stub implementation
+    x.pointee = 0
+    y.pointee = 0
+}
+
+@_cdecl("ldtk_layer_is_loaded")
+public func ldtk_layer_is_loaded(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UInt8 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_get_memory_usage")
+public func ldtk_layer_get_memory_usage(_ layer: UnsafePointer<LDtkSimpleLayer>) -> UInt32 {
+    // Stub implementation
+    return 0
+}
+
+@_cdecl("ldtk_layer_clear_cache")
+public func ldtk_layer_clear_cache(_ layer: UnsafeMutablePointer<LDtkSimpleLayer>) {
+    // Stub implementation
+}
